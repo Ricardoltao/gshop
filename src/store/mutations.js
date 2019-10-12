@@ -1,6 +1,7 @@
 /**
  * 直接更新 state 的多个方法的对象
  */
+import Vue from 'vue'
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
@@ -9,7 +10,9 @@ import {
   RESET_USER_INFO,
   RECEIVE_SHOP_GOODS,
   RECEIVE_SHOP_RATINGS,
-  RECEIVE_SHOP_INFO
+  RECEIVE_SHOP_INFO,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT
 } from './mutation-types'
 
 export default {
@@ -43,5 +46,21 @@ export default {
 
   [RECEIVE_SHOP_INFO] (state, {info}) {
     state.info = info
+  },
+
+  [INCREMENT_FOOD_COUNT] (state, {food}) {
+    if (!food.count) { // 第一次增加
+      // food.count = 1
+      // 为新增数据添加数据绑定
+      Vue.set(food, 'count', 1)
+    } else {
+      food.count++
+    }
+  },
+
+  [DECREMENT_FOOD_COUNT] (state, {food}) {
+    if (food.count) {
+      food.count--
+    }
   }
 }
