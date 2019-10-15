@@ -9,6 +9,7 @@ import router from './routers'
 import store from './store'
 
 import './mocks/mockServer'
+import './filters'
 
 // 注册全局组件
 Vue.component(Button.name, Button)
