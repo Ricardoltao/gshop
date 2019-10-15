@@ -1,33 +1,36 @@
 <template>
-  <div class="food" v-if="isShow">
-    <div class="food-content">
-      <div class="image-header">
-        <img
-          src="http://fuss10.elemecdn.com/8/a6/453f65f16b1391942af11511b7a90jpeg.jpeg?imageView2/1/w/750/h/750"
-        />
-        <p class="foodpanel-desc">主、 辅料:水、 大米、 南瓜、 冰糖等</p>
-        <div class="back" @click="toggleShow">
-          <i class="iconfont icon-arrow_left"></i>
+  <transition name="fade">
+    <div class="food" v-if="isShow">
+      <div class="food-content">
+        <div class="image-header">
+          <img :src="food.image" />
+          <p class="foodpanel-desc">{{ food.info }}</p>
+          <div class="back" @click="toggleShow">
+            <i class="iconfont icon-arrow_left"></i>
+          </div>
+        </div>
+        <div class="content">
+          <h1 class="title">{{ food.name }}</h1>
+          <div class="detail">
+            <span class="sell-count">月售{{ food.sellCount }}份</span>
+            <span class="rating">好评率{{ food.rating }}%</span>
+          </div>
+          <div class="price">
+            <span class="now">￥{{ food.price }}</span>
+            <span class="old" v-show="food.oldPrice">￥{{ food.oldPrice }}</span>
+          </div>
+          <div class="cartcontrol-wrapper">
+            <CartControl :food="food" />
+          </div>
         </div>
       </div>
-      <div class="content">
-        <h1 class="title">南瓜粥</h1>
-        <div class="detail">
-          <span class="sell-count">月售 91 份</span>
-          <span class="rating">好评率 100%</span>
-        </div>
-        <div class="price">
-          <span class="now">￥9</span>
-          <span class="old" style="display: none;">￥</span>
-        </div>
-        <div class="cartcontrol-wrapper">cartcontrol 组件</div>
-      </div>
+      <div class="food-cover" @click="toggleShow"></div>
     </div>
-    <div class="food-cover" @click="toggleShow"></div>
-  </div>
+  </transition>
 </template>
 
 <script>
+import CartControl from '../CartControl/CartControl.vue'
 export default {
   props: {
     food: Object
@@ -42,6 +45,10 @@ export default {
     toggleShow () {
       this.isShow = !this.isShow
     }
+  },
+
+  components: {
+    CartControl
   }
 }
 </script>

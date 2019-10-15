@@ -12,7 +12,8 @@ import {
   RECEIVE_SHOP_RATINGS,
   RECEIVE_SHOP_INFO,
   INCREMENT_FOOD_COUNT,
-  DECREMENT_FOOD_COUNT
+  DECREMENT_FOOD_COUNT,
+  CLEAR_CART
 } from './mutation-types'
 
 export default {
@@ -53,6 +54,8 @@ export default {
       // food.count = 1
       // 为新增数据添加数据绑定
       Vue.set(food, 'count', 1)
+      // 将food添加到countFood中
+      state.cartFoods.push(food)
     } else {
       food.count++
     }
@@ -61,6 +64,16 @@ export default {
   [DECREMENT_FOOD_COUNT] (state, {food}) {
     if (food.count) {
       food.count--
+      if (food.count === 0) {
+        state.cartFoods.splice(state.cartFoods.indexOf(food), 1)
+      }
     }
+  },
+
+  [CLEAR_CART](state){
+    // 重置food中的count
+    state.cartFoods.forEach(food => food.count=0)
+    // 清除cartFoods中的food
+    state.cartFoods = []
   }
 }

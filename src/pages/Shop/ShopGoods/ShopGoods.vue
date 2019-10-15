@@ -7,7 +7,7 @@
             class="menu-item"
             v-for="(good, index) in goods"
             :key="index"
-            :class="{current: currentIndex === index}"
+            :class="{ current: currentIndex === index }"
             @click="clickMenuItem(index)"
           >
             <span class="text bottom-border-1px">
@@ -20,7 +20,11 @@
 
       <div class="foods-wrapper" ref="foodsWrapper">
         <ul ref="foodsUl">
-          <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
+          <li
+            class="food-list-hook"
+            v-for="(good, index) in goods"
+            :key="index"
+          >
             <h1 class="title">{{ good.name }}</h1>
             <ul>
               <li
@@ -41,7 +45,9 @@
                   </div>
                   <div class="price">
                     <span class="now">￥{{ food.price }}</span>
-                    <span class="old" v-if="food.oldPrice">￥{{ food.oldPrice }}</span>
+                    <span class="old" v-if="food.oldPrice"
+                      >￥{{ food.oldPrice }}</span
+                    >
                   </div>
                   <div class="cartcontrol-wrapper">
                     <CartControl :food="food" />
@@ -53,7 +59,8 @@
         </ul>
       </div>
     </div>
-    <Food :food="food" ref="food"/>
+    <Food :food="food" ref="food" />
+    <ShopCart />
   </div>
 </template>
 
@@ -62,8 +69,9 @@ import BScroll from '@better-scroll/core'
 import { mapState } from 'vuex'
 import CartControl from '../../../components/CartControl/CartControl.vue'
 import Food from '../../../components/Food/Food.vue'
+import ShopCart from '../../../components/ShopCart/ShopCart.vue'
 export default {
-  data () {
+  data() {
     return {
       scrollY: 0,
       tops: [], // 所有右侧分类li的top组成的数组
@@ -71,7 +79,7 @@ export default {
     }
   },
 
-  mounted () {
+  mounted() {
     this.$store.dispatch('getShopGoods', () => {
       // 数据更新后执行
       this.$nextTick(() => {
@@ -85,7 +93,7 @@ export default {
     ...mapState(['goods']),
 
     // 计算得到当前分类的下标
-    currentIndex () {
+    currentIndex() {
       const { scrollY, tops } = this
       const index = tops.findIndex((top, index) => {
         return scrollY >= top && scrollY < tops[index + 1]
@@ -96,13 +104,13 @@ export default {
 
   methods: {
     // 初始化滚动条
-    _initScroll () {
+    _initScroll() {
       // 列表显示之后创建
-      // eslint-disable-next-line no-new
+
       new BScroll('.menu-wrapper', {
         click: true
       })
-      // eslint-disable-next-line no-new
+
       this.foodsScroll = new BScroll('.foods-wrapper', {
         probeType: 2,
         click: true
@@ -121,7 +129,7 @@ export default {
       })
     },
     // 初始化tops
-    _initTops () {
+    _initTops() {
       // 1.初始化
       const tops = []
       let top = 0
@@ -137,7 +145,7 @@ export default {
       console.log(tops)
     },
 
-    clickMenuItem (index) {
+    clickMenuItem(index) {
       // console.log(index)
       const scrollY = this.tops[index]
       this.scrollY = scrollY
@@ -146,7 +154,7 @@ export default {
     },
 
     // 显示点击food
-    showFood (food) {
+    showFood(food) {
       this.food = food
       // 显示 food 组件（在父组件中调用子组件对象的方法）
       this.$refs.food.toggleShow()
@@ -155,7 +163,8 @@ export default {
 
   components: {
     CartControl,
-    Food
+    Food,
+    ShopCart
   }
 }
 </script>
